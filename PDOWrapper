@@ -1,0 +1,52 @@
+<?php
+class PDOWrapper{
+
+    private $connection = null;
+    private $pdo = null;
+    
+    function __construct() //$host, $db, $username, $password
+    {
+        if(self::$connection == null)
+        {
+            try{
+                self::$pdo = new PDO("mysql:host={$host};dbname={$db}", $username, $password);
+            }
+            catch(PDOException $e){
+                echo $e->getMessage();
+                die();
+            }
+        }
+    }
+
+    public static function run($pdo, $sql, $args = NULL)
+    {
+        if (!$args)
+        {
+            return $pdo->query($sql);
+        }
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($args);
+        return $stmt;
+    }
+
+
+    public funciton insert(string $table, string $values, $args)
+    {
+        run($pdo, "INSERT INTO ".$table." VALUES (".$values.")",$args);
+    }
+
+    public funciotn update(string $table, string $set, string $where)
+    {
+        $sql = "UPDATE ".$table. " SET ".$set." WHERE ".$where.;
+        if ($connection->query($sql) === TRUE) {
+            echo "Record updated successfully";
+        } else {
+            echo "Error updating record: " . $conn->error;
+        } 
+    }
+
+    public function delete(string $table, string $where) {
+        $sql = "DELETE FROM " . $table . " WHERE " . $where .;		 
+   }
+}
+?>
